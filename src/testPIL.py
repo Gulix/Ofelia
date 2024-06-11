@@ -37,6 +37,7 @@ def drawMaze(maze):
         (207, 211, 167),
         (204, 229, 240)
     ]
+    '''
     colors = [
         (247, 37, 133),
         (181, 23, 158),
@@ -49,7 +50,7 @@ def drawMaze(maze):
         (72, 149, 239),
         (76, 201, 240)
     ]
-    
+    '''
     
     colorIndex = 0
     
@@ -64,8 +65,8 @@ def drawMaze(maze):
         previousX = -1
         previousY = -1
         for positions in path.getPositions():
-            x = positions['x']
-            y = positions['y']
+            x = positions[0]
+            y = positions[1]
             drawX = 10 * x + 2
             drawY = 10 * y + 2
             drawEndX = 10 * x + 2 + 6
@@ -93,13 +94,13 @@ def drawMaze(maze):
     im.save('ofelia_maze.jpg', quality=95)
 
 
-xMax = 20
-yMax = 20
+xMax = 100
+yMax = 100
 maze = mazePlane.mazePlane(xMax, yMax)
-maze.addPath(0, 0)
-maze.addPath(0, yMax - 1)
-maze.addPath(xMax - 1, 0)
-maze.addPath(xMax - 1, yMax - 1)
+maze.addPath((0, 0))
+maze.addPath((0, yMax - 1))
+maze.addPath((xMax - 1, 0))
+maze.addPath((xMax - 1, yMax - 1))
 
 print("## Building...")
 while maze.expandOneStep():

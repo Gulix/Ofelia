@@ -17,7 +17,7 @@ def displayCharPath(maze, colored=False):
                 'm' + charVal + '\x1b[0m'
         
         for positions in path.getPositions():
-            pathMap[positions['y']][positions['x']] = charVal
+            pathMap[positions[1]][positions[0]] = charVal
         charIndex += 1
 
     for y in range(maze.ySize):
@@ -28,10 +28,10 @@ def displayCharPath(maze, colored=False):
 
 maze = mazePlane.mazePlane(10, 10) # Size of the maze
 # Starting points
-maze.addPath(0, 0)
-maze.addPath(0, 9)
-maze.addPath(9, 0)
-maze.addPath(9, 9)
+maze.addPath((0, 0))
+maze.addPath((0, 9))
+maze.addPath((9, 0))
+maze.addPath((9, 9))
 while maze.expandOneStep():
     pass
 
