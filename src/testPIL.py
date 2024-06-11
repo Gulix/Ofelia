@@ -1,8 +1,12 @@
 import mazePlane
 from PIL import Image, ImageDraw
 
-def drawMaze(maze):
-    
+def drawMaze(maze, imageFileName = 'ofelia_maze.jpg', expandMaze = True):
+
+    # Does the maze need to be expanded to its full capacity?
+    if expandMaze:
+         while maze.expandOneStep():
+             pass
 
     im = Image.new('RGB', (maze.xSize * 10, maze.ySize * 10), (0, 0, 0))
     draw = ImageDraw.Draw(im)
@@ -91,9 +95,10 @@ def drawMaze(maze):
         if colorIndex >= len(colors):
             colorIndex = 0
     
-    im.save('ofelia_maze.jpg', quality=95)
+    im.save(imageFileName, quality=95)
 
 
+# Maze parameters
 xMax = 100
 yMax = 100
 maze = mazePlane.mazePlane(xMax, yMax)
@@ -102,9 +107,6 @@ maze.addPath((0, yMax - 1))
 maze.addPath((xMax - 1, 0))
 maze.addPath((xMax - 1, yMax - 1))
 
-print("## Building...")
-while maze.expandOneStep():
-    pass
 
 print("## Drawing...")
 drawMaze(maze)

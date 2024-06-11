@@ -10,7 +10,7 @@ class mazePlane:
         self.paths = [ ]
 
     def isPositionAvailable(self, position):
-        '''is position (a tuple representing x,y coordinates) valid (not out of bounds) and available (not on an existing path)'''
+        """is position (a tuple representing x,y coordinates) valid (not out of bounds) and available (not on an existing path)"""
         if position[0] < 0 or position[1] < 0 or position[0] >= self.xSize or position[1] >= self.ySize:
             return False
         
