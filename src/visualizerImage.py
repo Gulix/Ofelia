@@ -1,38 +1,66 @@
-import mazePlane
+from mazePlane import *
 from PIL import Image, ImageDraw
 
-def drawMaze(maze, imageFileName = 'ofelia_maze.jpg', expandMaze = True):
+def _get_image_from_maze(maze: mazePlane, colors: list, bg_color: tuple = (0, 0, 0)):
+    """Generates a PIL image object from a mazePlane"""
+    # Initialization of the PIL image object 
+    im = Image.new('RGB', (maze.xSize * 10, maze.ySize * 10), bg_color)
+    draw = ImageDraw.Draw(im)
 
+    # We'll iterate through the colors list for each path
+    color_index = 0
+    
+    # Iterating through the paths
+    for path in maze.paths:
+
+        # Getting the colors        
+        color = colors[color_index]
+        
+        previous_x = -1
+        previous_y = -1
+        # Drawing each position, one after the other, by getting the positions
+        for positions in path.getPositions():
+            # Setting the coordinates
+            x = positions[0]
+            y = positions[1]
+            draw_x = 10 * x + 2
+            draw_y = 10 * y + 2
+            draw_end_x = 10 * x + 2 + 6
+            draw_end_y = 10 * y + 2 + 6
+            
+            # Liaisons with the previous position
+            if (x == previous_x):
+                if (y > previous_y):
+                    draw_y -= 4
+                else:
+                    draw_end_y += 4
+            elif (y == previous_y):
+                if (x > previous_x):
+                    draw_x -= 4
+                else:
+                    draw_end_x += 4
+            previous_x = x
+            previous_y = y
+
+            # Drawing the rectangle for the position
+            draw.rectangle((draw_x, draw_y, draw_end_x, draw_end_y), fill=color)
+
+        # Getting the new color, looping when all colors have been used
+        color_index += 1
+        if color_index >= len(colors):
+            color_index = 0
+
+    return im
+
+def draw_maze(maze, image_filename = 'ofelia_maze.jpg', expand_maze = True):
+    """Draw a maze into an image file"""
+    
     # Does the maze need to be expanded to its full capacity?
-    if expandMaze:
+    if expand_maze:
          while maze.expandOneStep():
              pass
 
-    im = Image.new('RGB', (maze.xSize * 10, maze.ySize * 10), (0, 0, 0))
-    draw = ImageDraw.Draw(im)
-    
-    colors = [ 
-        (215, 43, 78),
-        (170, 146, 13),
-        (133, 155, 248),
-        (38, 128, 138),
-        (154, 44, 58),
-        (25, 117, 111),
-        (52, 62, 230),
-        (164, 152, 61),
-        (222, 11, 128),
-        (147, 151, 248),
-        (26, 158, 134),
-        (11, 79, 124),
-        (97, 81, 212),
-        (147, 77, 16),
-        (64, 163, 133),
-        (15, 141, 199),
-        (195, 44, 39),
-        (146, 79, 3),
-        (9, 94, 155),
-        (154, 15, 106)
-    ]
+    # A Pastel palette
     colors = [
         (158, 194, 223),
         (234, 206, 235),
@@ -41,67 +69,35 @@ def drawMaze(maze, imageFileName = 'ofelia_maze.jpg', expandMaze = True):
         (207, 211, 167),
         (204, 229, 240)
     ]
-    '''
+        
+    pil_image = _get_image_from_maze(maze, colors=colors)
+    pil_image.save(image_filename, quality=95)
+
+def draw_maze_gif(maze:mazePlane, image_filename = 'ofelia_maze_animated.gif'):
+    # A necessary and beautiful palette
     colors = [
-        (247, 37, 133),
-        (181, 23, 158),
-        (114, 9, 183),
-        (86, 11, 173),
-        (72, 12, 168),
-        (58, 12, 163),
-        (63, 55, 201),
-        (67, 97, 238),
-        (72, 149, 239),
-        (76, 201, 240)
+        (255, 0, 24),
+        (255, 165, 44),
+        (255, 255, 65),
+        (0, 128, 24),
+        (0, 0, 249),
+        (134, 0, 125)
     ]
-    '''
-    
-    colorIndex = 0
-    
-    print(str(len(maze.paths)) + " paths to draw...")
-
-    indexPath = 1
-    for path in maze.paths:
-        print("Path " + str(indexPath) + "/" + str(len(maze.paths)))
-        indexPath += 1
-        color = colors[colorIndex]
         
-        previousX = -1
-        previousY = -1
-        for positions in path.getPositions():
-            x = positions[0]
-            y = positions[1]
-            drawX = 10 * x + 2
-            drawY = 10 * y + 2
-            drawEndX = 10 * x + 2 + 6
-            drawEndY = 10 * y + 2 + 6
-            if (x == previousX):
-                if (y > previousY):
-                    drawY -= 4
-                else:
-                    drawEndY += 4
-            elif (y == previousY):
-                if (x > previousX):
-                    drawX -= 4
-                else:
-                    drawEndX += 4
-            previousX = x
-            previousY = y
-
-            draw.rectangle((drawX, drawY, drawEndX, drawEndY), fill=color)
-
-        
-        colorIndex += 1
-        if colorIndex >= len(colors):
-            colorIndex = 0
+    image_frames = [ ]
+    image_frames.append(_get_image_from_maze(maze, colors=colors))
     
-    im.save(imageFileName, quality=95)
+    while maze.expandOneStep():
+        image_frames.append(_get_image_from_maze(maze, colors=colors))
+        
+    image_frames[0].save(image_filename, save_all=True, append_images=image_frames[1:], optimize=False, duration=30, loop=0)
 
 
 # Maze parameters
+'''
 xMax = 100
 yMax = 100
-maze = mazePlane.mazePlane(xMax, yMax)
+maze = mazePlane(xMax, yMax)
 maze.addPath((0, 0))
 maze.addPath((0, yMax - 1))
 maze.addPath((xMax - 1, 0))
@@ -109,4 +105,15 @@ maze.addPath((xMax - 1, yMax - 1))
 
 
 print("## Drawing...")
-drawMaze(maze)
+draw_maze(maze, expand_maze=True)
+'''
+
+xMax = 50
+yMax = 50
+maze = mazePlane(xMax, yMax)
+maze.addPath((0, 0))
+maze.addPath((0, yMax - 1))
+maze.addPath((xMax - 1, 0))
+maze.addPath((xMax - 1, yMax - 1))
+
+draw_maze_gif(maze)

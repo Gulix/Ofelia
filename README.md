@@ -60,3 +60,7 @@ drawMaze(maze)
 This is the generation code : setting the size, the starting points, then building the maze (cost sensitive with those parameters), and drawing it. A jpg file is generated. Voilà!
 
 ![20x20, with neon colors](sample_two.jpg)
+
+Want to see how the maze is constructed?
+
+![](ofelia_maze_animated.gif)

@@ -1,5 +1,4 @@
 import random
-import mazePlane
 
 class mazePath:
     """A path going on in the maze"""
@@ -10,7 +9,7 @@ class mazePath:
     def getPositions(self):
         return self.points;
     
-    def expand(self, mazePlane: mazePlane.mazePlane):
+    def expand(self, mazePlane):
         """Expand the path one step in an available random direction (or stop it)"""
         lastPosition = self.points[-1]
         nextPositions = [
