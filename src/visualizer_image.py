@@ -73,7 +73,7 @@ def draw_maze(maze, image_filename = 'ofelia_maze.jpg', expand_maze = True):
     pil_image = _get_image_from_maze(maze, colors=colors)
     pil_image.save(image_filename, quality=95)
 
-def draw_maze_gif(maze:mazePlane, image_filename = 'ofelia_maze_animated.gif'):
+def draw_maze_gif(maze:mazePlane, image_filename = 'ofelia_maze_animated.gif', frame_duration:int = 30, loop:int = 0):
     # A necessary and beautiful palette
     colors = [
         (255, 0, 24),
@@ -90,7 +90,7 @@ def draw_maze_gif(maze:mazePlane, image_filename = 'ofelia_maze_animated.gif'):
     while maze.expandOneStep():
         image_frames.append(_get_image_from_maze(maze, colors=colors))
         
-    image_frames[0].save(image_filename, save_all=True, append_images=image_frames[1:], optimize=False, duration=30, loop=0)
+    image_frames[0].save(image_filename, save_all=True, append_images=image_frames[1:], optimize=False, duration=frame_duration, loop=loop)
 
 
 # Maze parameters
@@ -110,10 +110,11 @@ draw_maze(maze, expand_maze=True)
 
 xMax = 50
 yMax = 50
-maze = mazePlane(xMax, yMax, new_path_policy=NewPathPosition.NONE)
+maze = mazePlane(xMax, yMax, new_path_policy=NewPathPosition.NEAR_PREVIOUS)
 maze.addPath((0, 0))
 maze.addPath((0, yMax - 1))
 maze.addPath((xMax - 1, 0))
 maze.addPath((xMax - 1, yMax - 1))
 
-draw_maze_gif(maze)
+draw_maze_gif(maze, frame_duration=30, loop=1)
+draw_maze(maze)

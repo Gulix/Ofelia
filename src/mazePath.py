@@ -25,3 +25,6 @@ class mazePath:
                 return nextPosition
         self.isDone = True
         return None
+    
+    def get_origin(self):
+        return self.points[0]
