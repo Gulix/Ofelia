@@ -4,7 +4,7 @@ from PIL import Image, ImageDraw
 def _get_image_from_maze(maze: mazePlane, colors: list, bg_color: tuple = (0, 0, 0)):
     """Generates a PIL image object from a mazePlane"""
     # Initialization of the PIL image object 
-    im = Image.new('RGB', (maze.xSize * 10, maze.ySize * 10), bg_color)
+    im = Image.new('RGB', (maze.x_size * 10, maze.y_size * 10), bg_color)
     draw = ImageDraw.Draw(im)
 
     # We'll iterate through the colors list for each path
@@ -110,7 +110,7 @@ draw_maze(maze, expand_maze=True)
 
 xMax = 50
 yMax = 50
-maze = mazePlane(xMax, yMax)
+maze = mazePlane(xMax, yMax, new_path_policy=NewPathPosition.NONE)
 maze.addPath((0, 0))
 maze.addPath((0, yMax - 1))
 maze.addPath((xMax - 1, 0))
