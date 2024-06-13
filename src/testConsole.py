@@ -28,10 +28,10 @@ def displayCharPath(maze, colored=False):
 
 maze = mazePlane.mazePlane(10, 10) # Size of the maze
 # Starting points
-maze.addPath((0, 0))
-maze.addPath((0, 9))
-maze.addPath((9, 0))
-maze.addPath((9, 9))
+maze.add_path((0, 0))
+maze.add_path((0, 9))
+maze.add_path((9, 0))
+maze.add_path((9, 9))
 while maze.expandOneStep():
     pass
 

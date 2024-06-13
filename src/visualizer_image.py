@@ -111,10 +111,10 @@ draw_maze(maze, expand_maze=True)
 xMax = 50
 yMax = 50
 maze = mazePlane(xMax, yMax, new_path_policy=NewPathPosition.NEAR_PREVIOUS)
-maze.addPath((0, 0))
-maze.addPath((0, yMax - 1))
-maze.addPath((xMax - 1, 0))
-maze.addPath((xMax - 1, yMax - 1))
+maze.add_path((0, 0))
+maze.add_path((0, yMax - 1))
+maze.add_path((xMax - 1, 0))
+maze.add_path((xMax - 1, yMax - 1))
 
-draw_maze_gif(maze, frame_duration=30, loop=1)
-draw_maze(maze)
+draw_maze_gif(maze, frame_duration=30, loop=1, image_filename='./generated/maze.gif')
+draw_maze(maze, image_filename='./generated/maze.jpg')

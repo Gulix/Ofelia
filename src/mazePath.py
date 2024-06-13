@@ -20,7 +20,7 @@ class mazePath:
         ]
         random.shuffle(nextPositions)
         for nextPosition in nextPositions:
-            if mazePlane.isPositionAvailable(nextPosition):
+            if mazePlane.is_position_available(nextPosition):
                 self.points.append(nextPosition)
                 return nextPosition
         self.isDone = True
