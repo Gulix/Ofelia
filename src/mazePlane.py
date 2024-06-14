@@ -26,7 +26,21 @@ class mazePlane:
         
         return not self.points[position]
     
-    def get_nearest_available(self, origin): # Need to be enhanced with numpy
+    def _get_nearest_available(self, origin): # Need to be enhanced with numpy
+        # all available points into a table
+        available_points = np.transpose(np.where(~self.points))
+        if len(available_points) <= 0:
+            return None
+        
+        # the origin into a table
+        origin_point = np.array(origin)
+        # Looking for the distance between the two tables
+        distances = np.linalg.norm(available_points-origin_point, axis=1)
+        min_index = np.argmin(distances)
+        return (available_points[min_index][0], available_points[min_index][1])
+        '''
+        print(available_points[min_index])
+        
         square_size = 1 # The square size around the origin point
         max_size = max(self.x_size, self.y_size)
         start_point = (origin[0], origin[1]) # Where to start looking
@@ -56,6 +70,7 @@ class mazePlane:
                 return available_points[0]
 
         return None
+        '''
     
     def expandOneStep(self):
         for path in self.paths:
@@ -88,7 +103,7 @@ class mazePlane:
                 # Look for the nearest point to the source of the previous path
                 origin = former_path.get_origin()
                 if origin:
-                    return self.get_nearest_available(origin)
+                    return self._get_nearest_available(origin)
                 return None
             case _: # To expand
                 return None
