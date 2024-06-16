@@ -1,5 +1,7 @@
 # Ofelia
  
+![Ofelia, title](ofelia_title.png)
+
  A python script to generate _not mazes_, but look-alikes. The idea came from my daughter, the code from me. It's a very early code, with 1-hour work total. It still needs to be optimized, improved, enhanced. And we got ideas.
 
  The name comes from the movie **The Pan's Labyrinth**. The main character is named Ofelia. Also, I like recursive acronyms, so it stands for _Ofelia Fabrique d'Étonnants Labyrinthes et d'Incroyables Architectures_, which is french (cause I'm french). It could translates to _Ofelia makes stunning labyrinths and incredible architectures_ (which is not a recursive acronym anymore).
