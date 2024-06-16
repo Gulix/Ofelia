@@ -25,52 +25,19 @@ class mazePlane:
             return False
         
         return not self.points[position]
-    
-    def _get_nearest_available(self, origin): # Need to be enhanced with numpy
+
+    def _get_nearest_available(self, origin): 
+        
         # all available points into a table
         available_points = np.transpose(np.where(~self.points))
         if len(available_points) <= 0:
             return None
-        
-        # the origin into a table
+               
         origin_point = np.array(origin)
         # Looking for the distance between the two tables
         distances = np.linalg.norm(available_points-origin_point, axis=1)
         min_index = np.argmin(distances)
         return (available_points[min_index][0], available_points[min_index][1])
-        '''
-        print(available_points[min_index])
-        
-        square_size = 1 # The square size around the origin point
-        max_size = max(self.x_size, self.y_size)
-        start_point = (origin[0], origin[1]) # Where to start looking
-        
-        while square_size <= max_size:
-            start_point = (start_point[0] - 1, start_point[1] - 1)
-            square_size += 2
-            available_points = [ ]
-            
-            # Looking for available points in the perimeter around the origin
-            for x in range(start_point[0], start_point[0] + square_size):
-                if x == start_point[0] or x == (start_point[0] + square_size - 1):
-                    for y in range(start_point[1] + 1, start_point[1] + square_size - 1):
-                        if self.is_position_available((x, y)):
-                            available_points.append((x, y))
-                            
-                evaluated_point = (x, start_point[1])
-                if self.is_position_available(evaluated_point):
-                    available_points.append(evaluated_point)
-                
-                evaluated_point = (x, start_point[1] + square_size - 1)
-                if self.is_position_available(evaluated_point):
-                    available_points.append(evaluated_point)
-                
-            if len(available_points) > 0:
-                random.shuffle(available_points)
-                return available_points[0]
-
-        return None
-        '''
     
     def expandOneStep(self):
         for path in self.paths:

@@ -83,7 +83,11 @@ def draw_maze_gif(maze:mazePlane, image_filename = 'ofelia_maze_animated.gif', f
     
     while maze.expandOneStep():
         image_frames.append(_get_image_from_maze(maze, colors=colors))
+    
+    # The last one!
+    image_frames.append(_get_image_from_maze(maze, colors=colors))
         
+    # Save as a gif
     image_frames[0].save(image_filename, save_all=True, append_images=image_frames[1:], optimize=False, duration=frame_duration, loop=loop)
 
 
@@ -126,8 +130,8 @@ maze.add_path((0, 0))
 maze.add_path((0, yMax - 1))
 maze.add_path((xMax - 1, 0))
 maze.add_path((xMax - 1, yMax - 1))
-
+draw_maze(maze, image_filename='./generated/maze.png', colors=colors_greek, cell_size=10, path_size=4)
 draw_maze_gif(maze, frame_duration=30, loop=1, image_filename='./generated/maze.gif')
-draw_maze(maze, image_filename='./generated/maze.jpg', colors=colors_greek, cell_size=10, path_size=4)
+
 
 
