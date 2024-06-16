@@ -7,7 +7,7 @@ class colorManager:
 
     def __init__(self, colors = [ (169, 13, 13) ]):
         self._colors = colors
-        self._current_color_index = -1
+        self._current_color_index = 0
     
     def get_next_color(self):
         
@@ -17,5 +17,8 @@ class colorManager:
         
         self._current_color_index += 1
         return color
+    
+    def reset(self):
+        self._current_color_index = 0
 
 

@@ -61,18 +61,25 @@ def draw_maze(maze, colors, image_filename = 'ofelia_maze.jpg', expand_maze = Tr
     pil_image.save(image_filename, quality=95)
 
 def draw_maze_gif(maze:mazePlane, colors, image_filename = 'ofelia_maze_animated.gif', \
-                  frame_duration:int = 30, loop:int = 0 ):
+                  frame_duration:int = 30, loop:int = 0,\
+                    cell_size = 10, path_size = 6):
             
     image_frames = [ ]
-    image_frames.append(_get_image_from_maze(maze, colors=colors))
+    image_frames.append(_get_image_from_maze(maze, colors=colors, cell_size=cell_size, path_size=path_size))
     
     while maze.expandOneStep():
-        image_frames.append(_get_image_from_maze(maze, colors=colors))
+        colors.reset()
+        image_frames.append(_get_image_from_maze(maze, colors=colors, cell_size=cell_size, path_size=path_size))
     
     # The last one!
-    image_frames.append(_get_image_from_maze(maze, colors=colors))
+    colors.reset()
+    image_frames.append(_get_image_from_maze(maze, colors=colors, cell_size=cell_size, path_size=path_size))
         
     # Save as a gif
-    image_frames[0].save(image_filename, save_all=True, append_images=image_frames[1:], optimize=False, duration=frame_duration, loop=loop)
+    if not loop:
+        image_frames[0].save(image_filename, save_all=True, append_images=image_frames[1:], optimize=False, duration=frame_duration)
+    else:
+        image_frames[0].save(image_filename, save_all=True, append_images=image_frames[1:], optimize=False, duration=frame_duration, loop=loop)
+    
 
 
