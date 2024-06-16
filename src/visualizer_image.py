@@ -125,13 +125,13 @@ colors_greek = [
 
 xMax = 50
 yMax = 50
-maze = mazePlane(xMax, yMax, new_path_policy=NewPathPosition.NEAR_PREVIOUS)
+maze = mazePlane(xMax, yMax, new_path_policy=NewPathPosition.FULL_RANDOM)
 maze.add_path((0, 0))
 maze.add_path((0, yMax - 1))
 maze.add_path((xMax - 1, 0))
 maze.add_path((xMax - 1, yMax - 1))
-draw_maze(maze, image_filename='./generated/maze.png', colors=colors_greek, cell_size=10, path_size=4)
 draw_maze_gif(maze, frame_duration=30, loop=1, image_filename='./generated/maze.gif')
 
+draw_maze(maze, image_filename='./generated/maze.png', colors=colors_greek, cell_size=10, path_size=4)
 
 

@@ -27,7 +27,7 @@ class mazePlane:
         return not self.points[position]
 
     def _get_nearest_available(self, origin): 
-        
+        '''returns one of the nearest points of origin, which needs to be available'''
         # all available points into a table
         available_points = np.transpose(np.where(~self.points))
         if len(available_points) <= 0:
@@ -38,6 +38,15 @@ class mazePlane:
         distances = np.linalg.norm(available_points-origin_point, axis=1)
         min_index = np.argmin(distances)
         return (available_points[min_index][0], available_points[min_index][1])
+
+    def _get_random_available(self):
+        '''returns a random available point'''
+        # all available points into a table
+        available_points = np.transpose(np.where(~self.points))
+        if len(available_points) <= 0:
+            return None
+        rdm_point = random.choice(available_points)
+        return (rdm_point[0], rdm_point[1])
     
     def expandOneStep(self):
         for path in self.paths:
@@ -65,6 +74,7 @@ class mazePlane:
                             return point
                 return None
             case NewPathPosition.NONE:
+                # Just one path, then stop
                 return None
             case NewPathPosition.NEAR_PREVIOUS:
                 # Look for the nearest point to the source of the previous path
@@ -72,6 +82,8 @@ class mazePlane:
                 if origin:
                     return self._get_nearest_available(origin)
                 return None
+            case NewPathPosition.FULL_RANDOM:
+                return self._get_random_available()
             case _: # To expand
                 return None
 
