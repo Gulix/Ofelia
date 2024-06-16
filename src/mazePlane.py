@@ -1,5 +1,6 @@
 from enum import Enum
 import mazePath
+import mask
 import random
 import numpy as np
 
@@ -12,12 +13,16 @@ class NewPathPosition(Enum):
 
 class mazePlane:
     """A path going on in the maze"""
-    def __init__(self, x_size, y_size, new_path_policy: NewPathPosition = NewPathPosition.LEFT_THEN_TOP):
+    def __init__(self, x_size, y_size, new_path_policy: NewPathPosition = NewPathPosition.LEFT_THEN_TOP,\
+                 mask:mask.mask = None):
         self.x_size = x_size
         self.y_size = y_size
         self.points = np.zeros((x_size, y_size), dtype=bool) # List of points that are taken (False=Available) 
         self.paths = [ ]
         self.new_path_policy = new_path_policy
+        self.mask = mask
+        if self.mask:
+            self.apply_mask()
 
     def is_position_available(self, position):
         """is position (a tuple representing x,y coordinates) valid (not out of bounds) and available (not on an existing path)"""
@@ -106,5 +111,10 @@ class mazePlane:
         newPath.parent = parent
         self.paths.append(newPath)
         
-    
+    def apply_mask(self, mask:mask.mask = None):
+        if mask:
+            self.mask = mask
+        
+        for masked_point in self.mask.get_mask():
+            self.points[masked_point] = True
 

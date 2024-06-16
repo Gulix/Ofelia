@@ -1,4 +1,5 @@
 import visualizer_image as vis
+import mask
 import mazePlane as plane
 
 # Maze parameters
@@ -44,11 +45,15 @@ colors_rainbow = [
 
 xMax = 50
 yMax = 50
-maze = plane.mazePlane(xMax, yMax, new_path_policy=plane.NewPathPosition.NEAR_TRUE_ORIGIN)
+
+testMask = mask.mask()
+testMask.add_points([(24,24), (24,25), (24,26), (25,24), (25,25), (25,26), (26,24), (26,25), (26,26)])
+maze = plane.mazePlane(xMax, yMax, new_path_policy=plane.NewPathPosition.NEAR_TRUE_ORIGIN, mask=testMask)
 maze.add_path((0, 0))
 maze.add_path((0, yMax - 1))
 maze.add_path((xMax - 1, 0))
 maze.add_path((xMax - 1, yMax - 1))
+vis.draw_maze(maze, image_filename='./generated/mask.png', colors=colors_greek, cell_size=10, path_size=4)
 #vis.draw_maze_gif(maze, frame_duration=30, loop=1, image_filename='./generated/maze.gif')
 
 xMax = 50
