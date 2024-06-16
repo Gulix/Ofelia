@@ -5,6 +5,7 @@ class mazePath:
     def __init__(self, xStart, yStart):
         self.points = [ (xStart, yStart) ]
         self.isDone = False
+        self.parent = None
         
     def getPositions(self):
         return self.points;
@@ -28,3 +29,9 @@ class mazePath:
     
     def get_origin(self):
         return self.points[0]
+
+    def get_parent_origin(self):
+        """Get the origin of the elder parent from this branch of path"""
+        if self.parent:
+            return self.parent.get_parent_origin()
+        return self.get_origin()

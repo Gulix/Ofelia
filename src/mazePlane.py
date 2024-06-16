@@ -8,6 +8,7 @@ class NewPathPosition(Enum):
     LEFT_THEN_TOP = 1
     FULL_RANDOM = 2
     NEAR_PREVIOUS = 3
+    NEAR_TRUE_ORIGIN = 4
 
 class mazePlane:
     """A path going on in the maze"""
@@ -50,19 +51,22 @@ class mazePlane:
     
     def expandOneStep(self):
         for path in self.paths:
+            all_paths_done = True
             if not path.isDone:
+                all_paths_done = False
                 newPoint = path.expand(self)
                 if newPoint is not None:
                     self.points[newPoint] = True
                 else:
                     newStart = self.getAvailableStart(path)
                     if newStart:
-                        self.add_path(newStart)
+                        self.add_path(newStart, parent=path)
                     else:
                         return False
-        return True
+        return not all_paths_done
 
     def getAvailableStart(self, former_path):
+        """Finds the best available start, depending on the policy defined for the path"""
         # Need improvement to get start near the start of the path, or on more random locations ?
         match self.new_path_policy:
             case NewPathPosition.LEFT_THEN_TOP:
@@ -82,17 +86,25 @@ class mazePlane:
                 if origin:
                     return self._get_nearest_available(origin)
                 return None
+            case NewPathPosition.NEAR_TRUE_ORIGIN:
+                # Look for the nearest point to the source of the first path from this branch
+                origin = former_path.get_parent_origin()
+                if origin:
+                    return self._get_nearest_available(origin)
+                return None
             case NewPathPosition.FULL_RANDOM:
                 return self._get_random_available()
             case _: # To expand
                 return None
 
-    def add_path(self, xy_coords):
+    def add_path(self, xy_coords, parent=None):
         """add a new path to the maze plane, starting at the given coords"""
         # taking the point of origin
         self.points[xy_coords] = True
         # the new Path
         newPath = mazePath.mazePath(xy_coords[0], xy_coords[1])
+        newPath.parent = parent
         self.paths.append(newPath)
+        
     
 

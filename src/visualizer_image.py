@@ -67,17 +67,10 @@ def draw_maze(maze, image_filename = 'ofelia_maze.jpg', expand_maze = True, colo
     pil_image = _get_image_from_maze(maze, colors=colors, cell_size=cell_size, path_size=path_size)
     pil_image.save(image_filename, quality=95)
 
-def draw_maze_gif(maze:mazePlane, image_filename = 'ofelia_maze_animated.gif', frame_duration:int = 30, loop:int = 0):
-    # A necessary and beautiful palette
-    colors = [
-        (255, 0, 24),
-        (255, 165, 44),
-        (255, 255, 65),
-        (0, 128, 24),
-        (0, 0, 249),
-        (134, 0, 125)
-    ]
-        
+def draw_maze_gif(maze:mazePlane, image_filename = 'ofelia_maze_animated.gif', \
+                  frame_duration:int = 30, loop:int = 0,\
+                    colors = [ (169, 13, 42)] ):
+            
     image_frames = [ ]
     image_frames.append(_get_image_from_maze(maze, colors=colors))
     
@@ -122,15 +115,30 @@ colors_greek = [
     (205,102,0),
     (139,37,0)
 ]
+# A rainbow palette
+colors_rainbow = [
+    (255, 0, 24),
+    (255, 165, 44),
+    (255, 255, 65),
+    (0, 128, 24),
+    (0, 0, 249),
+    (134, 0, 125)
+]
 
 xMax = 50
 yMax = 50
-maze = mazePlane(xMax, yMax, new_path_policy=NewPathPosition.FULL_RANDOM)
+maze = mazePlane(xMax, yMax, new_path_policy=NewPathPosition.NEAR_TRUE_ORIGIN)
 maze.add_path((0, 0))
 maze.add_path((0, yMax - 1))
 maze.add_path((xMax - 1, 0))
 maze.add_path((xMax - 1, yMax - 1))
 draw_maze_gif(maze, frame_duration=30, loop=1, image_filename='./generated/maze.gif')
+
+xMax = 50
+yMax = 50
+maze = mazePlane(xMax, yMax, new_path_policy=NewPathPosition.NEAR_TRUE_ORIGIN)
+maze.add_path((25, 25))
+draw_maze_gif(maze, frame_duration=30, loop=1, image_filename='./generated/centeredmaze.gif', colors=colors_pastel)
 
 draw_maze(maze, image_filename='./generated/maze.png', colors=colors_greek, cell_size=10, path_size=4)
 
