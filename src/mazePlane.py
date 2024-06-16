@@ -19,10 +19,19 @@ class mazePlane:
         self.y_size = y_size
         self.points = np.zeros((x_size, y_size), dtype=bool) # List of points that are taken (False=Available) 
         self.paths = [ ]
+        self.starting_paths = [ ]
         self.new_path_policy = new_path_policy
         self.mask = mask
         if self.mask:
             self.apply_mask()
+
+    def reset(self):
+        self.points = np.zeros((self.x_size, self.y_size), dtype=bool)
+        if self.mask:
+            self.apply_mask()
+        self.paths = [ ]
+        for starting_path in self.starting_paths:
+            self.add_path(starting_path.get_origin())
 
     def is_position_available(self, position):
         """is position (a tuple representing x,y coordinates) valid (not out of bounds) and available (not on an existing path)"""
@@ -104,7 +113,7 @@ class mazePlane:
             case _: # To expand
                 return None
 
-    def add_path(self, xy_coords, parent=None):
+    def add_path(self, xy_coords, parent=None, starting=False):
         """add a new path to the maze plane, starting at the given coords"""
         # taking the point of origin
         # it needs to be available
@@ -120,6 +129,8 @@ class mazePlane:
         newPath = mazePath.mazePath(good_origin[0], good_origin[1])
         newPath.parent = parent
         self.paths.append(newPath)
+        if starting:
+            self.starting_paths.append(newPath)
         
     def apply_mask(self, mask:mask.mask = None):
         if mask:
