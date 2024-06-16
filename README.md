@@ -14,6 +14,8 @@ This is what Ofelia can generate. And I'll explain soon what are the rules/behav
 
 Right now, the code is kinda _as is_, and I plan to work on making it more user friendly (so my daughter can more easily play with it). You can look at the two generators.
 
+You can also get to [see some examples](examples.md).
+
 ### Console generation
 
 Open the `testConsole.py` script. There, you can change the size of the maze you generate, and state the starting points. Then, you display it. The `colored` argument is there as a test to colorize the output (but it's kind of meh).
