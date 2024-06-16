@@ -87,15 +87,17 @@ class mazePlane:
                 return None
             case NewPathPosition.NEAR_PREVIOUS:
                 # Look for the nearest point to the source of the previous path
-                origin = former_path.get_origin()
-                if origin:
-                    return self._get_nearest_available(origin)
+                if former_path:
+                    origin = former_path.get_origin()
+                    if origin:
+                        return self._get_nearest_available(origin)
                 return None
             case NewPathPosition.NEAR_TRUE_ORIGIN:
                 # Look for the nearest point to the source of the first path from this branch
-                origin = former_path.get_parent_origin()
-                if origin:
-                    return self._get_nearest_available(origin)
+                if former_path:
+                    origin = former_path.get_parent_origin()
+                    if origin:
+                        return self._get_nearest_available(origin)
                 return None
             case NewPathPosition.FULL_RANDOM:
                 return self._get_random_available()
@@ -105,9 +107,17 @@ class mazePlane:
     def add_path(self, xy_coords, parent=None):
         """add a new path to the maze plane, starting at the given coords"""
         # taking the point of origin
-        self.points[xy_coords] = True
+        # it needs to be available
+        good_origin = xy_coords
+        if self.points[xy_coords]:
+            good_origin = self.getAvailableStart(former_path=None)
+            if not good_origin:
+                good_origin = self._get_nearest_available(xy_coords)
+                if not good_origin:
+                    return                
+        self.points[good_origin] = True
         # the new Path
-        newPath = mazePath.mazePath(xy_coords[0], xy_coords[1])
+        newPath = mazePath.mazePath(good_origin[0], good_origin[1])
         newPath.parent = parent
         self.paths.append(newPath)
         
