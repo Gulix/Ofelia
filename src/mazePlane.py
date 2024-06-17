@@ -14,7 +14,7 @@ class NewPathPosition(Enum):
 class mazePlane:
     """A path going on in the maze"""
     def __init__(self, x_size, y_size, new_path_policy: NewPathPosition = NewPathPosition.LEFT_THEN_TOP,\
-                 mask:mask.mask = None):
+                 mask:mask.mask = None, branches_probability = None):
         self.x_size = x_size
         self.y_size = y_size
         self.points = np.zeros((x_size, y_size), dtype=bool) # List of points that are taken (False=Available) 
@@ -24,6 +24,10 @@ class mazePlane:
         self.mask = mask
         if self.mask:
             self.apply_mask()
+        self.with_branches = False
+        if branches_probability:
+            self.with_branches = True
+            self.branches_probabilty = branches_probability
 
     def reset(self):
         self.points = np.zeros((self.x_size, self.y_size), dtype=bool)
@@ -68,10 +72,12 @@ class mazePlane:
             all_paths_done = True
             if not path.isDone:
                 all_paths_done = False
-                newPoint = path.expand(self)
-                if newPoint is not None:
-                    self.points[newPoint] = True
-                else:
+                # Expand can return multiple points if there is branch
+                newPoints = path.expand(self)
+                if len(newPoints) > 0: # new points have been added
+                    for newPoint in newPoints:
+                        self.points[newPoint] = True
+                else: # A new path is needed
                     newStart = self.getAvailableStart(path)
                     if newStart:
                         self.add_path(newStart, parent=path)
@@ -126,7 +132,10 @@ class mazePlane:
                     return                
         self.points[good_origin] = True
         # the new Path
-        newPath = mazePath.mazePath(good_origin[0], good_origin[1])
+        branches_prob = None
+        if self.with_branches:
+            branches_prob = self.branches_probabilty
+        newPath = mazePath.mazePath(good_origin[0], good_origin[1], branches_probability = branches_prob)
         newPath.parent = parent
         self.paths.append(newPath)
         if starting:
