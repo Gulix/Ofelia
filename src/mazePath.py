@@ -1,10 +1,15 @@
 import random
+from maze_points import mazePoint
 
 class mazePath:
     """A path going on in the maze"""
     def __init__(self, xStart, yStart, branches_probability = None):
-        self.points = [ (xStart, yStart) ]
-        self.current_points = [ (xStart, yStart) ]
+        
+        # Will store the "current points", from where to expand (we can retrace the path through parent)
+        self._all_points = [ mazePoint(None, (xStart, yStart)) ]
+        self._active_points = [ self._all_points[0] ]
+        #self.points = [ (xStart, yStart) ]
+        #self.current_points = [ (xStart, yStart) ]
         self.isDone = False
         self.parent = None
         self.with_branches = False
@@ -12,29 +17,30 @@ class mazePath:
             self.with_branches = True
             self.branches_probability = branches_probability
         
-    def getPositions(self):
-        return self.points;
+    def get_points(self): # To deprecate
+        return self._points;
     
     def expand(self, mazePlane):
         """Expand the path one step in an available random direction (or stop it)"""
-        
-        new_current_positions = [ ]
-        for lastPosition in self.current_points:
-            # The available positions from the current point
-            nextPositions = [
-                ( lastPosition[0] + 1, lastPosition[1]),
-                (lastPosition[0], lastPosition[1] + 1),
-                (lastPosition[0] - 1, lastPosition[1]),
-                (lastPosition[0], lastPosition[1] - 1)
+        new_points = [ ]
+        for expandable_point in self._active_points:
+
+            # The available positions from the current point are strict NWSE neighbours
+            neighbour_coords = [
+                ( expandable_point.get_X() + 1, expandable_point.get_Y()),
+                ( expandable_point.get_X(), expandable_point.get_Y() + 1),
+                ( expandable_point.get_X() - 1, expandable_point.get_Y()),
+                ( expandable_point.get_X(), expandable_point.get_Y() - 1)
             ]
             available_positions = [ ]
-            for nextPosition in nextPositions:
-                if mazePlane.is_position_available(nextPosition):
-                    available_positions.append(nextPosition)
+            for coord in neighbour_coords:
+                if mazePlane.is_position_available(coord):
+                    available_positions.append(coord)
             
+            # If any position is available
             if len(available_positions) > 0:
                 nb_extensions = 1
-                # Revealing a branch ?
+                # Generating a branch ?
                 if self.with_branches and len(available_positions) > 1:
                     if random.choice([0, 100]) <= self.branches_probability:
                     #if len(self.points) == 10:
@@ -42,16 +48,25 @@ class mazePath:
             
                 random.shuffle(available_positions)
                 for index in range(0, nb_extensions):
-                    new_current_positions.append(available_positions[index])
-            
-        if len(new_current_positions) == 0:
+                    new_points.append(mazePoint(expandable_point, available_positions[index]))
+
+        # No new points found? That path is "Done"
+        if len(new_points) == 0:
             self.isDone = True
-        self.current_points = new_current_positions
-        self.points.extend(new_current_positions)
-        return new_current_positions
+        
+        # Refreshing the points table (all & current)
+        self._active_points = [ ]
+        returned_coords = [ ]
+        if len(new_points) > 0:
+            self._all_points.extend(new_points)
+            self._active_points.extend(new_points)
+            for pt in new_points:
+                returned_coords.append( (pt.get_X(), pt.get_Y()) )
+        
+        return returned_coords
     
-    def get_origin(self):
-        return self.points[0]
+    def get_origin_point(self):
+        return self._all_points[0]
 
     def get_parent_origin(self):
         """Get the origin of the elder parent from this branch of path"""
