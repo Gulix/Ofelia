@@ -8,7 +8,7 @@ colors = colMg.colorManager(colors=colMg._PASTELS_PALETTE)
 
 xMax = 15
 yMax = 15
-maze = plane.mazePlane(xMax, yMax, new_path_policy=plane.NewPathPosition.NEAR_PREVIOUS, branches_probability=10)
+maze = plane.mazePlane(xMax, yMax, new_path_policy=plane.NewPathPosition.NEAR_TRUE_ORIGIN, branches_probability=10)
 #maze = plane.mazePlane(xMax, yMax)
 maze.add_path((0, 0))
 maze.add_path((0, yMax - 1))

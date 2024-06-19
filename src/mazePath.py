@@ -71,4 +71,4 @@ class mazePath:
         """Get the origin of the elder parent from this branch of path"""
         if self.parent:
             return self.parent.get_parent_origin()
-        return self.get_origin()
+        return self.get_origin_point()

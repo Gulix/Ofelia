@@ -112,7 +112,7 @@ class mazePlane:
                 if former_path:
                     origin = former_path.get_parent_origin()
                     if origin:
-                        return self._get_nearest_available(origin)
+                        return self._get_nearest_available( ( origin.get_X(), origin.get_Y() ) )
                 return None
             case NewPathPosition.FULL_RANDOM:
                 return self._get_random_available()
