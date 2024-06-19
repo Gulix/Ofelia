@@ -103,9 +103,9 @@ class mazePlane:
             case NewPathPosition.NEAR_PREVIOUS:
                 # Look for the nearest point to the source of the previous path
                 if former_path:
-                    origin = former_path.get_origin()
+                    origin = former_path.get_origin_point()
                     if origin:
-                        return self._get_nearest_available(origin)
+                        return self._get_nearest_available( ( origin.get_X(), origin.get_Y() ) )
                 return None
             case NewPathPosition.NEAR_TRUE_ORIGIN:
                 # Look for the nearest point to the source of the first path from this branch

@@ -42,8 +42,7 @@ class mazePath:
                 nb_extensions = 1
                 # Generating a branch ?
                 if self.with_branches and len(available_positions) > 1:
-                    if random.choice([0, 100]) <= self.branches_probability:
-                    #if len(self.points) == 10:
+                    if random.randrange(0, 101) <= self.branches_probability:
                         nb_extensions += 1
             
                 random.shuffle(available_positions)
