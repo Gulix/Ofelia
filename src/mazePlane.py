@@ -29,7 +29,7 @@ class mazePlane:
             self.with_branches = True
             self.branches_probabilty = branches_probability
 
-    def reset(self):
+    def reset(self): # TODO : repair it
         self.points = np.zeros((self.x_size, self.y_size), dtype=bool)
         if self.mask:
             self.apply_mask()
@@ -68,8 +68,8 @@ class mazePlane:
         return (rdm_point[0], rdm_point[1])
     
     def expandOneStep(self):
+        all_paths_done = True
         for path in self.paths:
-            all_paths_done = True
             if not path.isDone:
                 all_paths_done = False
                 # Expand can return multiple points if there is branch
