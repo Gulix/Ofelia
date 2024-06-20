@@ -63,7 +63,7 @@ def draw_maze(maze, colors, image_filename = 'ofelia_maze.jpg', expand_maze = Tr
     
     # Does the maze need to be expanded to its full capacity?
     if expand_maze:
-         while maze.expandOneStep():
+         while maze.expand_one_step():
              pass    
         
     pil_image = _get_image_from_maze(maze, colors=colors, cell_size=cell_size, path_size=path_size)
@@ -76,7 +76,7 @@ def draw_maze_gif(maze:mazePlane, colors, image_filename = 'ofelia_maze_animated
     image_frames = [ ]
     image_frames.append(_get_image_from_maze(maze, colors=colors, cell_size=cell_size, path_size=path_size))
     
-    while maze.expandOneStep():
+    while maze.expand_one_step():
         colors.reset()
         image_frames.append(_get_image_from_maze(maze, colors=colors, cell_size=cell_size, path_size=path_size))
     

@@ -67,7 +67,7 @@ class mazePlane:
         rdm_point = random.choice(available_points)
         return (rdm_point[0], rdm_point[1])
     
-    def expandOneStep(self):
+    def expand_one_step(self):
         all_paths_done = True
         for path in self.paths:
             if not path.isDone:

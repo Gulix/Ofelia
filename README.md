@@ -40,25 +40,24 @@ b f f f d d d d d d
 
 ### Image generation
 
-Open the `testPIL.py` script. As noted in the file, it uses the PIL image generation library. You need it to run it.
+Open the `test_generation.py` script. As noted in the file, it uses the PIL image generation library. You need it to run it.
 
 You'll find three fillings of the `colors` table. Only the last one is used (previous were tests with my daughter). This is one the stuff I need to improve. But, for your own tests, fill that table with the colors you want for your image.
 
 ```
+colors = colMg.colorManager(colors=colMg._PASTELS_PALETTE)
+
 xMax = 100
 yMax = 100
-maze = mazePlane.mazePlane(xMax, yMax)
-maze.addPath(0, 0)
-maze.addPath(0, yMax - 1)
-maze.addPath(xMax - 1, 0)
-maze.addPath(xMax - 1, yMax - 1)
+maze = plane.mazePlane(xMax, yMax)
+maze.add_path((0, 0))
+maze.add_path((0, yMax - 1))
+maze.add_path((xMax - 1, 0))
 
-print("## Building...")
-while maze.expandOneStep():
-    pass
-
-print("## Drawing...")
-drawMaze(maze)
+print("maze parameters OK")
+print("starting to draw it")
+vis.draw_maze(maze, image_filename='./generated/simple.png', colors=colors, expand_maze=True)
+print("png done")
 ```
 
 This is the generation code : setting the size, the starting points, then building the maze (cost sensitive with those parameters), and drawing it. A jpg file is generated. Voilà!

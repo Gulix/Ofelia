@@ -32,7 +32,7 @@ maze.add_path((0, 0))
 maze.add_path((0, 9))
 maze.add_path((9, 0))
 maze.add_path((9, 9))
-while maze.expandOneStep():
+while maze.expand_one_step():
     pass
 
 displayCharPath(maze, colored=False)
