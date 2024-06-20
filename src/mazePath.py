@@ -23,6 +23,7 @@ class mazePath:
     def expand(self, mazePlane):
         """Expand the path one step in an available random direction (or stop it)"""
         new_points = [ ]
+        # Multiple active points means multiple active branches
         for expandable_point in self._active_points:
 
             # The available positions from the current point are strict NWSE neighbours
@@ -32,11 +33,20 @@ class mazePath:
                 ( expandable_point.get_X() - 1, expandable_point.get_Y()),
                 ( expandable_point.get_X(), expandable_point.get_Y() - 1)
             ]
+            
+            # Removing the points that might have been taken, in the same step, by a previous branch
+            # Those points are not "taken" already, so the is_position_available doesn't take them into concern
+            # TODO : if loops are authorized, this is a control we don't have to do
+            for pt in new_points:
+                new_coord = ( pt.get_X(), pt.get_Y() )
+                while new_coord in neighbour_coords: neighbour_coords.remove(new_coord)
+            
+            # Checking the availability of the points
             available_positions = [ ]
             for coord in neighbour_coords:
                 if mazePlane.is_position_available(coord):
-                    available_positions.append(coord)
-            
+                    available_positions.append(coord)    
+
             # If any position is available
             if len(available_positions) > 0:
                 nb_extensions = 1
