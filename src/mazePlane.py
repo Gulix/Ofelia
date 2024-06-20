@@ -14,7 +14,7 @@ class NewPathPosition(Enum):
 class mazePlane:
     """A path going on in the maze"""
     def __init__(self, x_size, y_size, new_path_policy: NewPathPosition = NewPathPosition.LEFT_THEN_TOP,\
-                 mask:mask.mask = None, branches_probability = None):
+                 mask:mask.mask = None, branches_probability = None, with_loop = False):
         self.x_size = x_size
         self.y_size = y_size
         self.points = np.zeros((x_size, y_size), dtype=bool) # List of points that are taken (False=Available) 
@@ -28,6 +28,7 @@ class mazePlane:
         if branches_probability:
             self.with_branches = True
             self.branches_probabilty = branches_probability
+        self._with_loop = with_loop
 
     def reset(self): # TODO : repair it
         self.points = np.zeros((self.x_size, self.y_size), dtype=bool)
@@ -135,7 +136,7 @@ class mazePlane:
         branches_prob = None
         if self.with_branches:
             branches_prob = self.branches_probabilty
-        newPath = mazePath.mazePath(good_origin[0], good_origin[1], branches_probability = branches_prob)
+        newPath = mazePath.mazePath(good_origin[0], good_origin[1], branches_probability = branches_prob, with_loop=self._with_loop)
         newPath.parent = parent
         self.paths.append(newPath)
         if starting:

@@ -6,16 +6,16 @@ import mazePlane as plane
 
 colors = colMg.colorManager(colors=colMg._PASTELS_PALETTE)
 
-xMax = 75
-yMax = 75
-maze = plane.mazePlane(xMax, yMax, new_path_policy=plane.NewPathPosition.NEAR_TRUE_ORIGIN, branches_probability=1)
+xMax = 25
+yMax = 25
+maze = plane.mazePlane(xMax, yMax, new_path_policy=plane.NewPathPosition.NEAR_TRUE_ORIGIN, branches_probability=1, with_loop=True)
 #maze = plane.mazePlane(xMax, yMax)
 maze.add_path((0, 0))
 maze.add_path((0, yMax - 1))
 maze.add_path((xMax - 1, 0))
 print("maze parameters OK")
 print("starting to draw it in ... gif mode")
-vis.draw_maze_gif(maze, colors=colors, frame_duration=70, loop=0, image_filename='./generated/maze.gif')
+#vis.draw_maze_gif(maze, colors=colors, frame_duration=70, loop=0, image_filename='./generated/maze.gif')
 print("gif done")
 #maze.reset()
 print("starting to draw it in ... png mode")
