@@ -14,7 +14,7 @@ class NewPathPosition(Enum):
 class mazePlane:
     """A path going on in the maze"""
     def __init__(self, x_size, y_size, new_path_policy: NewPathPosition = NewPathPosition.LEFT_THEN_TOP,\
-                 mask:mask.mask = None, branches_probability = None, with_loop = False):
+                 mask:mask.mask = None, branches_probability = None, with_loop = False, random_seed:int = None):
         self.x_size = x_size
         self.y_size = y_size
         self.points = np.zeros((x_size, y_size), dtype=bool) # List of points that are taken (False=Available) 
@@ -29,6 +29,8 @@ class mazePlane:
             self.with_branches = True
             self.branches_probabilty = branches_probability
         self._with_loop = with_loop
+        self._randomizer = random.Random()
+        self._randomizer.seed(random_seed)
 
     def reset(self): # TODO : repair it
         self.points = np.zeros((self.x_size, self.y_size), dtype=bool)
@@ -65,7 +67,7 @@ class mazePlane:
         available_points = np.transpose(np.where(~self.points))
         if len(available_points) <= 0:
             return None
-        rdm_point = random.choice(available_points)
+        rdm_point = self._randomizer.choice(available_points)
         return (rdm_point[0], rdm_point[1])
     
     def expand_one_step(self):
@@ -149,3 +151,5 @@ class mazePlane:
         for masked_point in self.mask.get_mask():
             self.points[masked_point] = True
 
+    def get_randomizer(self):
+        return self._randomizer

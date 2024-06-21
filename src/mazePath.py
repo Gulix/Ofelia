@@ -64,10 +64,10 @@ class mazePath:
                 nb_extensions = 1
                 # Generating a branch ?
                 if self.with_branches and len(available_positions) > 1:
-                    if random.randrange(0, 101) <= self.branches_probability:
+                    if mazePlane.get_randomizer().randrange(0, 101) <= self.branches_probability:
                         nb_extensions += 1
             
-                random.shuffle(available_positions)
+                mazePlane.get_randomizer().shuffle(available_positions)
                 for index in range(0, nb_extensions):
                     new_points.append(mazePoint(expandable_point, available_positions[index]))
                     if available_positions[index] in looped_positions:
