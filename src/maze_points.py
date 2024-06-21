@@ -18,6 +18,9 @@ class mazePoint:
     def get_Y(self):
         return self._coords[1]
     
+    def get_coords(self):
+        return self._coords
+    
     def get_parent(self):
         return self._parent    
     

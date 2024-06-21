@@ -24,6 +24,7 @@ class mazePath:
     def expand(self, mazePlane):
         """Expand the path one step in an available random direction (or stop it)"""
         new_points = [ ]
+        loop_ending_points = [ ]
         # Multiple active points means multiple active branches
         for expandable_point in self._active_points:
 
@@ -34,6 +35,10 @@ class mazePath:
                 ( expandable_point.get_X() - 1, expandable_point.get_Y()),
                 ( expandable_point.get_X(), expandable_point.get_Y() - 1)
             ]
+            # Excluding the direct parent
+            if expandable_point.get_parent():
+                parent_coord = expandable_point.get_parent().get_coords()
+                neighbour_coords.remove(parent_coord)
             
             # Removing the points that might have been taken, in the same step, by a previous branch
             # Those points are not "taken" already, so the is_position_available doesn't take them into concern
@@ -45,10 +50,12 @@ class mazePath:
             
             # Checking the availability of the points
             available_positions = [ ]
+            looped_positions = [ ]
             for coord in neighbour_coords:
                 # Making loop with another point of the path (TODO : and then ending path)
                 if self._with_loop and self._is_point_in_path(coord):
                     available_positions.append(coord)
+                    looped_positions.append(coord)
                 elif mazePlane.is_position_available(coord):
                     available_positions.append(coord)
 
@@ -63,6 +70,9 @@ class mazePath:
                 random.shuffle(available_positions)
                 for index in range(0, nb_extensions):
                     new_points.append(mazePoint(expandable_point, available_positions[index]))
+                    if available_positions[index] in looped_positions:
+                        loop_ending_points.append(available_positions[index])
+
 
         # No new points found? That path is "Done"
         if len(new_points) == 0:
@@ -73,9 +83,12 @@ class mazePath:
         returned_coords = [ ]
         if len(new_points) > 0:
             self._all_points.extend(new_points)
-            self._active_points.extend(new_points)
             for pt in new_points:
-                returned_coords.append( (pt.get_X(), pt.get_Y()) )
+                # the path continue if a new point existn and is not involved in a loop
+                if not pt.get_coords() in loop_ending_points:
+                    self._active_points.append(pt)
+                # Added for return purposes (storing the point state in the maze)
+                returned_coords.append( pt.get_coords() )
         
         return returned_coords
     
