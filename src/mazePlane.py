@@ -14,7 +14,7 @@ class NewPathPosition(Enum):
 class mazePlane:
     """A path going on in the maze"""
     def __init__(self, x_size, y_size, new_path_policy: NewPathPosition = NewPathPosition.LEFT_THEN_TOP,\
-                 mask:mask.mask = None):
+                 mask:mask.mask = None, branches_probability = None, with_loop = False):
         self.x_size = x_size
         self.y_size = y_size
         self.points = np.zeros((x_size, y_size), dtype=bool) # List of points that are taken (False=Available) 
@@ -24,8 +24,13 @@ class mazePlane:
         self.mask = mask
         if self.mask:
             self.apply_mask()
+        self.with_branches = False
+        if branches_probability:
+            self.with_branches = True
+            self.branches_probabilty = branches_probability
+        self._with_loop = with_loop
 
-    def reset(self):
+    def reset(self): # TODO : repair it
         self.points = np.zeros((self.x_size, self.y_size), dtype=bool)
         if self.mask:
             self.apply_mask()
@@ -63,15 +68,17 @@ class mazePlane:
         rdm_point = random.choice(available_points)
         return (rdm_point[0], rdm_point[1])
     
-    def expandOneStep(self):
+    def expand_one_step(self):
+        all_paths_done = True
         for path in self.paths:
-            all_paths_done = True
             if not path.isDone:
                 all_paths_done = False
-                newPoint = path.expand(self)
-                if newPoint is not None:
-                    self.points[newPoint] = True
-                else:
+                # Expand can return multiple points if there is branch
+                newPoints = path.expand(self)
+                if len(newPoints) > 0: # new points have been added
+                    for newPoint in newPoints:
+                        self.points[newPoint] = True
+                else: # A new path is needed
                     newStart = self.getAvailableStart(path)
                     if newStart:
                         self.add_path(newStart, parent=path)
@@ -97,16 +104,16 @@ class mazePlane:
             case NewPathPosition.NEAR_PREVIOUS:
                 # Look for the nearest point to the source of the previous path
                 if former_path:
-                    origin = former_path.get_origin()
+                    origin = former_path.get_origin_point()
                     if origin:
-                        return self._get_nearest_available(origin)
+                        return self._get_nearest_available( ( origin.get_X(), origin.get_Y() ) )
                 return None
             case NewPathPosition.NEAR_TRUE_ORIGIN:
                 # Look for the nearest point to the source of the first path from this branch
                 if former_path:
                     origin = former_path.get_parent_origin()
                     if origin:
-                        return self._get_nearest_available(origin)
+                        return self._get_nearest_available( ( origin.get_X(), origin.get_Y() ) )
                 return None
             case NewPathPosition.FULL_RANDOM:
                 return self._get_random_available()
@@ -126,7 +133,10 @@ class mazePlane:
                     return                
         self.points[good_origin] = True
         # the new Path
-        newPath = mazePath.mazePath(good_origin[0], good_origin[1])
+        branches_prob = None
+        if self.with_branches:
+            branches_prob = self.branches_probabilty
+        newPath = mazePath.mazePath(good_origin[0], good_origin[1], branches_probability = branches_prob, with_loop=self._with_loop)
         newPath.parent = parent
         self.paths.append(newPath)
         if starting:
