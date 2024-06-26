@@ -1,8 +1,9 @@
 class mazePoint:
-    def __init__(self, parent = None, coords = (0, 0)):
+    def __init__(self, step, parent = None, coords = (0, 0)):
         self._parent = parent
         self._coords = coords
         self._children = [ ]
+        self._step = step
         if parent:
             parent._children.append(self)
 
@@ -26,3 +27,6 @@ class mazePoint:
     
     def get_children(self):
         return self._children
+    
+    def get_step(self):
+        return self._step

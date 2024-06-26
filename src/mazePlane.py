@@ -31,6 +31,7 @@ class mazePlane:
         self._with_loop = with_loop
         self._randomizer = random.Random()
         self._randomizer.seed(random_seed)
+        self._current_step = 0
 
     def reset(self): # TODO : repair it
         self.points = np.zeros((self.x_size, self.y_size), dtype=bool)
@@ -71,17 +72,20 @@ class mazePlane:
         return (rdm_point[0], rdm_point[1])
     
     def expand_one_step(self):
+        '''expand the maze by one step. All the active paths grow one more step, and eventually new paths are created.'''
+        
         all_paths_done = True
+        self._current_step += 1
         for path in self.paths:
             if not path.isDone:
                 all_paths_done = False
                 # Expand can return multiple points if there is branch
-                newPoints = path.expand(self)
+                newPoints = path.expand(self, step = self._current_step)
                 if len(newPoints) > 0: # new points have been added
                     for newPoint in newPoints:
                         self.points[newPoint] = True
                 else: # A new path is needed
-                    newStart = self.getAvailableStart(path)
+                    newStart = self.getAvailableStart(former_path=path)
                     if newStart:
                         self.add_path(newStart, parent=path)
                     else:
@@ -138,7 +142,9 @@ class mazePlane:
         branches_prob = None
         if self.with_branches:
             branches_prob = self.branches_probabilty
-        newPath = mazePath.mazePath(good_origin[0], good_origin[1], branches_probability = branches_prob, with_loop=self._with_loop)
+        newPath = mazePath.mazePath(good_origin[0], good_origin[1], \
+                                    branches_probability = branches_prob, with_loop=self._with_loop, \
+                                    step = self._current_step)
         newPath.parent = parent
         self.paths.append(newPath)
         if starting:

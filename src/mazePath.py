@@ -3,10 +3,10 @@ from maze_points import mazePoint
 
 class mazePath:
     """A path going on in the maze"""
-    def __init__(self, xStart, yStart, branches_probability = None, with_loop = False):
+    def __init__(self, xStart, yStart, branches_probability = None, with_loop = False, step = 0):
         
         # Will store the "current points", from where to expand (we can retrace the path through parent)
-        self._all_points = [ mazePoint(None, (xStart, yStart)) ]
+        self._all_points = [ mazePoint( parent=None, coords=(xStart, yStart), step = step) ]
         self._active_points = [ self._all_points[0] ]
         self.isDone = False
         self.parent = None
@@ -21,7 +21,7 @@ class mazePath:
     def get_points(self): # To deprecate
         return self._points;
     
-    def expand(self, mazePlane):
+    def expand(self, mazePlane, step):
         """Expand the path one step in an available random direction (or stop it)"""
         new_points = [ ]
         loop_ending_points = [ ]
@@ -69,7 +69,7 @@ class mazePath:
             
                 mazePlane.get_randomizer().shuffle(available_positions)
                 for index in range(0, nb_extensions):
-                    new_points.append(mazePoint(expandable_point, available_positions[index]))
+                    new_points.append(mazePoint(parent=expandable_point, coords=available_positions[index], step=step))
                     if available_positions[index] in looped_positions:
                         loop_ending_points.append(available_positions[index])
 
