@@ -71,7 +71,13 @@ class mazePlane:
         rdm_point = self._randomizer.choice(available_points)
         return (rdm_point[0], rdm_point[1])
     
-    def expand_one_step(self):
+    def generate(self):
+        '''generate the structure from the paths'''
+        while self._expand_one_step():
+            print ("Step " + str(self._current_step), end="\r")
+        print(str(self._current_step) + " steps done")
+    
+    def _expand_one_step(self):
         '''expand the maze by one step. All the active paths grow one more step, and eventually new paths are created.'''
         
         all_paths_done = True
@@ -159,3 +165,6 @@ class mazePlane:
 
     def get_randomizer(self):
         return self._randomizer
+    
+    def get_final_step(self):
+        return self._current_step
