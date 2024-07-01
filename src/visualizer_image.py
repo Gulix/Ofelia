@@ -76,15 +76,6 @@ def draw_maze_gif(maze:mazePlane, colors, image_filename = 'ofelia_maze_animated
         image_frames.append(_get_image_from_maze(maze, colors=colors, cell_size=cell_size, path_size=path_size, step_index_to=step))
     print("Gif generation // All " + str_steps + " frames done")
     
-    
-    #while maze._expand_one_step():
-    #    colors.reset()
-    #    image_frames.append(_get_image_from_maze(maze, colors=colors, cell_size=cell_size, path_size=path_size))
-    
-    # The last one!
-    #colors.reset()
-    #image_frames.append(_get_image_from_maze(maze, colors=colors, cell_size=cell_size, path_size=path_size))
-        
     # Save as a gif
     if loop is None:
         image_frames[0].save(image_filename, save_all=True, append_images=image_frames[1:], optimize=False, duration=frame_duration)

@@ -19,7 +19,6 @@ print("maze parameters OK")
 print("starting to draw it in ... gif mode")
 vis.draw_maze_gif(maze, colors=colors, frame_duration=70, loop=0, image_filename='./generated/maze.gif')
 print("gif done")
-#maze.reset()
 print("starting to draw it in ... png mode")
 vis.draw_maze(maze, image_filename='./generated/simple2.png', 
               colors=colors, cell_size=8, path_size=4)

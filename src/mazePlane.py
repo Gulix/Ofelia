@@ -33,14 +33,6 @@ class mazePlane:
         self._randomizer.seed(random_seed)
         self._current_step = 0
 
-    def reset(self): # TODO : repair it
-        self.points = np.zeros((self.x_size, self.y_size), dtype=bool)
-        if self.mask:
-            self.apply_mask()
-        self.paths = [ ]
-        for starting_path in self.starting_paths:
-            self.add_path(starting_path.get_origin())
-
     def is_position_available(self, position):
         """is position (a tuple representing x,y coordinates) valid (not out of bounds) and available (not on an existing path)"""
         # out of bounds
