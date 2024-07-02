@@ -1,6 +1,8 @@
 from mazePlane import *
 from PIL import Image, ImageDraw
 
+#TODO Should colors be typed, with an abstract/interface class on top of all the "color manager" ?
+
 def _get_image_from_maze(maze: mazePlane, colors, bg_color: tuple = (0, 0, 0), cell_size=10, path_size=6, step_index_to:int = None):
     """Generates a PIL image object from a mazePlane"""
     # Initialization of the PIL image object 

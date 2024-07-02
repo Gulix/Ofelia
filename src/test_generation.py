@@ -1,6 +1,7 @@
 import visualizer_image as vis
 from colors import palettes
 from colors.palettes import paletteColorManager
+from colors.gradient import gradientColorManager
 import mask
 import mazePlane as plane
 from palettable.colorbrewer.qualitative import Dark2_7
@@ -12,6 +13,8 @@ colors = paletteColorManager(palettable=Dark2_7)
 colors = paletteColorManager(palettable=perceptual_rainbow_16)
 palette = Cubehelix.make(start=0.1, rotation=-0.75, n=32)
 colors = paletteColorManager(palettable=palette)
+
+colors = gradientColorManager()
 
 xMax = 25
 yMax = 25
