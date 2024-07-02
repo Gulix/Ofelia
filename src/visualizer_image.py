@@ -1,8 +1,7 @@
 from mazePlane import *
-from colors.palettes import colorManager
 from PIL import Image, ImageDraw
 
-def _get_image_from_maze(maze: mazePlane, colors:colorManager , bg_color: tuple = (0, 0, 0), cell_size=10, path_size=6, step_index_to:int = None):
+def _get_image_from_maze(maze: mazePlane, colors, bg_color: tuple = (0, 0, 0), cell_size=10, path_size=6, step_index_to:int = None):
     """Generates a PIL image object from a mazePlane"""
     # Initialization of the PIL image object 
     im = Image.new('RGB', (maze.x_size * cell_size, maze.y_size * cell_size), bg_color)

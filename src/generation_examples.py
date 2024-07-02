@@ -1,10 +1,11 @@
 import visualizer_image as vis
-import colors.palettes as colMg
+from colors import palettes
+from colors.palettes import paletteColorManager
 import mask
 import mazePlane as plane
 
 
-colors = colMg.colorManager(colors=colMg._PASTELS_PALETTE)
+colors = paletteColorManager(colors=palettes._PASTELS_PALETTE)
 xMax = 25
 yMax = 25
 cell_size = 4
@@ -33,7 +34,7 @@ vis.draw_maze_gif(maze, frame_duration=30, loop=0, image_filename='./examples/le
                   colors=colors, cell_size=cell_size, path_size=path_size)
 
 # Change the palette
-colors = colMg.colorManager(colors=colMg._GREEK_PALETTE)
+colors = paletteColorManager(colors=palettes._GREEK_PALETTE)
 
 # Near first origin
 maze = plane.mazePlane(xMax, yMax, new_path_policy=plane.NewPathPosition.NEAR_TRUE_ORIGIN)
@@ -55,7 +56,7 @@ vis.draw_maze_gif(maze, frame_duration=30, loop=0, image_filename='./examples/ne
                   colors=colors, cell_size=cell_size, path_size=path_size)
 
 # Change the palette
-colors = colMg.colorManager(colors=colMg._RAINBOW_PALETTE)
+colors = paletteColorManager(colors=palettes._RAINBOW_PALETTE)
 
 # Full random
 maze = plane.mazePlane(xMax, yMax, new_path_policy=plane.NewPathPosition.FULL_RANDOM)
