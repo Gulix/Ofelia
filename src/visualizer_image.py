@@ -1,5 +1,5 @@
 from mazePlane import *
-from colors_manager import colorManager
+from colors.colors_manager import colorManager
 from PIL import Image, ImageDraw
 
 def _get_image_from_maze(maze: mazePlane, colors:colorManager , bg_color: tuple = (0, 0, 0), cell_size=10, path_size=6, step_index_to:int = None):

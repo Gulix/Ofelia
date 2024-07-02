@@ -1,5 +1,5 @@
 import visualizer_image as vis
-import colors_manager as colMg
+import colors.colors_manager as colMg
 import mask
 import mazePlane as plane
 from palettable.colorbrewer.qualitative import Dark2_7
