@@ -53,10 +53,11 @@ maze = plane.mazePlane(xMax, yMax)
 maze.add_path((0, 0))
 maze.add_path((0, yMax - 1))
 maze.add_path((xMax - 1, 0))
+maze.generate()
 
 print("maze parameters OK")
 print("starting to draw it")
-vis.draw_maze(maze, image_filename='./generated/simple.png', colors=colors, expand_maze=True)
+vis.draw_maze(maze, image_filename='./generated/simple.png', colors=colors)
 print("png done")
 ```
 

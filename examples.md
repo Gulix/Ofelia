@@ -24,9 +24,9 @@ maze.add_path((0, 0), starting=True)
 maze.add_path((0, yMax - 1), starting=True)
 maze.add_path((xMax - 1, 0), starting=True)
 maze.add_path((xMax - 1, yMax - 1), starting=True)
+maze.generate()
 vis.draw_maze_gif(maze, frame_duration=30, loop=None, image_filename='./examples/none.gif', \
                   colors=colors, cell_size=cell_size, path_size=path_size)
-maze.reset()
 vis.draw_maze_gif(maze, frame_duration=30, loop=0, image_filename='./examples/none_loop.gif', \
                   colors=colors, cell_size=cell_size, path_size=path_size)
 ```
@@ -41,9 +41,9 @@ With the `LEFT_THEN_TOP` policy, the new paths are created in the first availabl
 maze = plane.mazePlane(xMax, yMax, new_path_policy=plane.NewPathPosition.LEFT_THEN_TOP)
 maze.add_path((xMax - 1, 0), starting=True)
 maze.add_path((xMax - 1, yMax - 1), starting=True)
+maze.generate()
 vis.draw_maze_gif(maze, frame_duration=30, loop=None, image_filename='./examples/leftthentop.gif', \
                   colors=colors, cell_size=cell_size, path_size=path_size)
-maze.reset()
 vis.draw_maze_gif(maze, frame_duration=30, loop=0, image_filename='./examples/leftthentop_loop.gif', \
                   colors=colors, cell_size=cell_size, path_size=path_size)
 ```
@@ -57,9 +57,9 @@ The `NEAR_TRUE_ORIGIN` policy will look to the origin of the first path (in a se
 # Near first origin
 maze = plane.mazePlane(xMax, yMax, new_path_policy=plane.NewPathPosition.NEAR_TRUE_ORIGIN)
 maze.add_path((int(xMax / 2), int(yMax / 2)), starting=True)
+maze.generate()
 vis.draw_maze_gif(maze, frame_duration=30, loop=None, image_filename='./examples/neartrueorigin.gif', \
                   colors=colors, cell_size=cell_size, path_size=path_size)
-maze.reset()
 vis.draw_maze_gif(maze, frame_duration=30, loop=0, image_filename='./examples/neartrueorigin_loop.gif', \
                   colors=colors, cell_size=cell_size, path_size=path_size)
 ```
@@ -74,9 +74,9 @@ The `NEAR_PREVIOUS` policy will look for the available position near the start o
 maze = plane.mazePlane(xMax, yMax, new_path_policy=plane.NewPathPosition.NEAR_PREVIOUS)
 maze.add_path((0, 0), starting=True)
 maze.add_path((0, yMax - 1), starting=True)
+maze.generate()
 vis.draw_maze_gif(maze, frame_duration=30, loop=None, image_filename='./examples/nearprevious.gif', \
                   colors=colors, cell_size=cell_size, path_size=path_size)
-maze.reset()
 vis.draw_maze_gif(maze, frame_duration=30, loop=0, image_filename='./examples/nearprevious_loop.gif', \
                   colors=colors, cell_size=cell_size, path_size=path_size)
 ```
@@ -90,9 +90,9 @@ The `FULL_RANDOM` policy will let randomness choose a new start.
 # Full random
 maze = plane.mazePlane(xMax, yMax, new_path_policy=plane.NewPathPosition.FULL_RANDOM)
 maze.add_path((0, 0), starting=True)
+maze.generate()
 vis.draw_maze_gif(maze, frame_duration=30, loop=None, image_filename='./examples/fullrandom.gif', \
                   colors=colors, cell_size=cell_size, path_size=path_size)
-maze.reset()
 vis.draw_maze_gif(maze, frame_duration=30, loop=0, image_filename='./examples/fullrandom_loop.gif', \
                   colors=colors, cell_size=cell_size, path_size=path_size)
 ```
@@ -110,9 +110,9 @@ testMask.set_mask_from_image(image='./examples/mask_example.jpg', square_size=(c
 maze = plane.mazePlane(xMax, yMax, new_path_policy=plane.NewPathPosition.NEAR_TRUE_ORIGIN, mask=testMask)
 maze.add_path((0, 0), starting=True)
 maze.add_path((xMax - 1, yMax - 1), starting=True)
+maze.generate()
 vis.draw_maze_gif(maze, frame_duration=30, loop=None, image_filename='./examples/mask.gif', \
                   colors=colors, cell_size=cell_size, path_size=path_size)
-maze.reset()
 vis.draw_maze_gif(maze, frame_duration=30, loop=0, image_filename='./examples/mask_loop.gif', \
                   colors=colors, cell_size=cell_size, path_size=path_size)
 ```
