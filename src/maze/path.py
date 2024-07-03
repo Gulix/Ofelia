@@ -3,7 +3,8 @@ from maze.points import mazePoint
 
 class mazePath:
     """A path going on in the maze"""
-    def __init__(self, xStart, yStart, branches_probability = None, with_loop = False, step = 0):
+    def __init__(self, xStart, yStart, branches_probability = None, with_loop = False, step = 0, \
+                 tag = None):
         
         # Will store the "current points", from where to expand (we can retrace the path through parent)
         self._all_points = [ mazePoint( parent=None, coords=(xStart, yStart), step = step) ]
@@ -17,6 +18,7 @@ class mazePath:
             self.branches_probability = branches_probability
         # Loop
         self._with_loop = with_loop
+        self._tag = tag
         
     def get_points(self): # To deprecate
         return self._points;
@@ -107,3 +109,6 @@ class mazePath:
                 return True
             
         return False
+
+    def get_tag(self):
+        return self._tag

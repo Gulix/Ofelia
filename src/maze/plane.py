@@ -142,7 +142,7 @@ class mazePlane:
             branches_prob = self.branches_probabilty
         newPath = path.mazePath(good_origin[0], good_origin[1], \
                                     branches_probability = branches_prob, with_loop=self._with_loop, \
-                                    step = self._current_step)
+                                    step = self._current_step, tag=parent.get_tag() if parent else None)
         newPath.parent = parent
         self.paths.append(newPath)
         if starting:
