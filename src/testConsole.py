@@ -1,4 +1,4 @@
-import mazePlane
+import maze.plane as plane
 import random
 
 def displayCharPath(maze, colored=False):
@@ -26,7 +26,7 @@ def displayCharPath(maze, colored=False):
             line += pathMap[y][x] + ' '
         print(line)
 
-maze = mazePlane.mazePlane(10, 10) # Size of the maze
+maze = plane.mazePlane(10, 10) # Size of the maze
 # Starting points
 maze.add_path((0, 0))
 maze.add_path((0, 9))

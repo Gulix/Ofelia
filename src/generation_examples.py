@@ -2,7 +2,7 @@ import visualizer_image as vis
 from colors import palettes
 from colors.palettes import paletteColorManager
 import mask
-import mazePlane as plane
+import maze.plane as plane
 
 
 colors = paletteColorManager(colors=palettes._PASTELS_PALETTE)

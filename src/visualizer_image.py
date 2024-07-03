@@ -1,4 +1,4 @@
-from mazePlane import *
+from maze.plane import *
 from PIL import Image, ImageDraw
 
 #TODO Should colors be typed, with an abstract/interface class on top of all the "color manager" ?

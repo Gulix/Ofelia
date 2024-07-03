@@ -1,5 +1,5 @@
 from enum import Enum
-import mazePath
+import maze.path as path
 import mask
 import random
 import numpy as np
@@ -140,7 +140,7 @@ class mazePlane:
         branches_prob = None
         if self.with_branches:
             branches_prob = self.branches_probabilty
-        newPath = mazePath.mazePath(good_origin[0], good_origin[1], \
+        newPath = path.mazePath(good_origin[0], good_origin[1], \
                                     branches_probability = branches_prob, with_loop=self._with_loop, \
                                     step = self._current_step)
         newPath.parent = parent

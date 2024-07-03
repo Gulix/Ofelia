@@ -1,5 +1,5 @@
 import random
-from maze_points import mazePoint
+from maze.points import mazePoint
 
 class mazePath:
     """A path going on in the maze"""

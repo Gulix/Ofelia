@@ -3,7 +3,7 @@ from colors import palettes
 from colors.palettes import paletteColorManager
 from colors.gradient import gradientColorManager
 import mask
-import mazePlane as plane
+import maze.plane as plane
 from palettable.colorbrewer.qualitative import Dark2_7
 from palettable.cubehelix import perceptual_rainbow_16
 from palettable.cubehelix import Cubehelix
