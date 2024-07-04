@@ -3,7 +3,9 @@ from PIL import Image, ImageDraw
 
 #TODO Should colors be typed, with an abstract/interface class on top of all the "color manager" ?
 
-def _get_image_from_maze(maze: mazePlane, colors, bg_color: tuple = (0, 0, 0), cell_size=10, path_size=6, step_index_to:int = None):
+def _get_image_from_maze(maze: mazePlane, \
+                         colors = None, colors_bytag = None, bg_color: tuple = (0, 0, 0), \
+                            cell_size=10, path_size=6, step_index_to:int = None):
     """Generates a PIL image object from a mazePlane"""
     # Initialization of the PIL image object 
     im = Image.new('RGB', (maze.x_size * cell_size, maze.y_size * cell_size), bg_color)
@@ -12,8 +14,14 @@ def _get_image_from_maze(maze: mazePlane, colors, bg_color: tuple = (0, 0, 0), c
     # Iterating through the paths
     for path in maze.paths:
 
-        # Getting the colors        
-        color = colors.get_next_color()
+        # Getting the color
+        color = ( 66, 81, 51 ) # a truly mundane color
+        if colors_bytag:
+            path_tag = path.get_tag()
+            if path_tag in colors_bytag:
+                color = colors_bytag[path_tag].get_next_color()
+        elif colors:
+            color = colors.get_next_color()
         
         origin = path.get_origin_point()
         _draw_point_then_children(origin, drawing_canvas=draw, cell_size=cell_size, path_size=path_size, color=color, step_index_to=step_index_to)
@@ -58,13 +66,13 @@ def _draw_point_then_children(point, drawing_canvas, color, cell_size=10, path_s
         _draw_point_then_children(child, drawing_canvas=drawing_canvas, cell_size=cell_size, path_size=path_size, color=color, step_index_to=step_index_to)
 
 
-def draw_maze(maze, colors, image_filename = 'ofelia_maze.jpg', cell_size = 10, path_size = 6):
+def draw_maze(maze, colors = None, colors_bytag = None, image_filename = 'ofelia_maze.jpg', cell_size = 10, path_size = 6):
     """Draw a maze into an image file"""
         
-    pil_image = _get_image_from_maze(maze, colors=colors, cell_size=cell_size, path_size=path_size)
+    pil_image = _get_image_from_maze(maze, colors=colors, colors_bytag=colors_bytag, cell_size=cell_size, path_size=path_size)
     pil_image.save(image_filename, quality=95)
 
-def draw_maze_gif(maze:mazePlane, colors, image_filename = 'ofelia_maze_animated.gif', \
+def draw_maze_gif(maze:mazePlane, colors = None, colors_bytag = None, image_filename = 'ofelia_maze_animated.gif', \
                   frame_duration:int = 30, loop:int = 0,\
                     cell_size = 10, path_size = 6):
             
@@ -73,8 +81,13 @@ def draw_maze_gif(maze:mazePlane, colors, image_filename = 'ofelia_maze_animated
     str_steps = str(maze.get_final_step())
     for step in range(0, maze.get_final_step() + 1):
         print("Gif generation // Frame " + str(step) + "/" + str_steps, end="\r")
-        colors.reset()
-        image_frames.append(_get_image_from_maze(maze, colors=colors, cell_size=cell_size, path_size=path_size, step_index_to=step))
+        # Resetting the color managers. A new frame is started, and the color manager reset at the first color.
+        if colors:
+            colors.reset()
+        if colors_bytag:
+            for tag, color_manager in colors_bytag.items():
+                color_manager.reset()
+        image_frames.append(_get_image_from_maze(maze, colors=colors, colors_bytag=colors_bytag, cell_size=cell_size, path_size=path_size, step_index_to=step))
     print("Gif generation // All " + str_steps + " frames done")
     
     # Save as a gif

@@ -124,7 +124,7 @@ class mazePlane:
             case _: # To expand
                 return None
 
-    def add_path(self, xy_coords, parent=None, starting=False):
+    def add_path(self, xy_coords, parent=None, starting=False, tag=None):
         """add a new path to the maze plane, starting at the given coords"""
         # taking the point of origin
         # it needs to be available
@@ -140,9 +140,11 @@ class mazePlane:
         branches_prob = None
         if self.with_branches:
             branches_prob = self.branches_probabilty
+    
         newPath = path.mazePath(good_origin[0], good_origin[1], \
                                     branches_probability = branches_prob, with_loop=self._with_loop, \
-                                    step = self._current_step, tag=parent.get_tag() if parent else None)
+                                    step = self._current_step, \
+                                    tag=parent.get_tag() if parent else tag) # TODO : how to use the Tag ?
         newPath.parent = parent
         self.paths.append(newPath)
         if starting:
